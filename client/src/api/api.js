@@ -37,8 +37,6 @@ export const fetchUserData = async (token) => {
 
       const json = await response.json();
 
-      console.log(json);
-
       return json.user;
    } catch (error) {
       console.log("Error in fetchUserData API", error.message);

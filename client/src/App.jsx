@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Login";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Home from "./components/Home";
@@ -15,29 +15,22 @@ const App = () => {
    const { user, setUser } = useContext(UserContext);
 
    useEffect(() => {
-      if (
-         sessionStorage.getItem("auth-token") &&
-         Object.keys(user).length === 0
-      ) {
+      if (sessionStorage.getItem("auth-token") && !user) {
          const fetchData = async () => {
             const data = await fetchUserData(
                sessionStorage.getItem("auth-token")
             );
-
-            console.log(1);
-
-            console.log(data);
 
             setUser(data);
          };
 
          fetchData();
       }
-   }, [user]);
+   }, []); // eslint-disable-line
 
    useEffect(() => {
       if (sessionStorage.getItem("auth-token")) {
-         navigate("/");
+         navigate("/document");
       } else {
          navigate("/login");
       }
@@ -47,7 +40,12 @@ const App = () => {
       <>
          <GoogleOAuthProvider clientId={clientId}>
             <Routes>
-               <Route exact path="/" element={<Home />} />
+               <Route
+                  exact
+                  path="/"
+                  element={<Navigate to="/document" replace />}
+               />
+               <Route exact path="/document" element={<Home />} />
                <Route exact path="/login" element={<Login />} />
             </Routes>
          </GoogleOAuthProvider>

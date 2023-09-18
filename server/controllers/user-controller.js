@@ -5,16 +5,20 @@ export const loginUser = async (req, res) => {
    try {
       const { sub } = req.body;
 
-      const user = await User.find({ sub });
+      const user = await User.findOne({ sub });
 
       let token;
 
-      if (Object.keys(user).length !== 0) {
-         token = jwt.sign({ id: user[0]._id }, process.env.JWT_SECRET);
+      if (user) {
+         token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
+         user._id = undefined;
+         user.sub = undefined;
+         user._v = undefined;
 
          return res
             .status(200)
-            .json({ msg: "User found", data: { token, user: user[0] } });
+            .json({ msg: "User found", data: { token, user: user } });
       }
 
       let newUser = await User.create(req.body);
@@ -22,6 +26,10 @@ export const loginUser = async (req, res) => {
       token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
 
       await newUser.save();
+
+      newUser._id = undefined;
+      newUser.sub = undefined;
+      newUser._v = undefined;
 
       return res
          .status(200)
