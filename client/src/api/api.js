@@ -27,7 +27,7 @@ export const loginUser = async (data) => {
 
 export const fetchUserData = async (token) => {
    try {
-      const response = await fetch(`${url}/api/fetchData`, {
+      const response = await fetch(`${url}/api/users/getUser`, {
          method: "POST",
          headers: {
             "Content-Type": "application/json",
@@ -40,5 +40,25 @@ export const fetchUserData = async (token) => {
       return json.user;
    } catch (error) {
       console.log("Error in fetchUserData API", error.message);
+   }
+};
+
+export const createDocument = async (data) => {
+   try {
+      const response = await fetch(`${url}/api/documents/createDocument`, {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify(data),
+      });
+
+      const json = await response.json();
+
+      console.log(json);
+
+      return json.newDocument;
+   } catch (error) {
+      console.log("Error in createDocument API", error.message);
    }
 };

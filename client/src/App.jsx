@@ -8,6 +8,7 @@ import { UserContext } from "./context/UserContextProvider";
 import { fetchUserData } from "./api/api";
 import TextEditor from "./components/TextEditor";
 import "./styles.css";
+import "./App.css";
 
 const App = () => {
    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;

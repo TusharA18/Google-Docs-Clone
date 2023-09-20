@@ -1,10 +1,11 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectToDB from "./database/db.js";
-import authRouter from "./routes/auth.js";
-import fetchDataRouter from "./routes/fetchData.js";
 import bodyParser from "body-parser";
 import cors from "cors";
+import authRouter from "./routes/auth.js";
+import userRouter from "./routes/user.js";
+import documentRouter from "./routes/document.js";
 
 // config
 dotenv.config();
@@ -17,7 +18,8 @@ app.use(cors());
 
 // routes
 app.use("/api/auth", authRouter);
-app.use("/api/fetchData", fetchDataRouter);
+app.use("/api/users", userRouter);
+app.use("/api/documents", documentRouter);
 
 // listen
 app.listen(port, () => {

@@ -1,6 +1,6 @@
 import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContextProvider";
 
@@ -25,11 +25,67 @@ const toolbarOptions = [
 ];
 
 const TextEditor = () => {
-   const [value, setValue] = useState("");
+   const { user, setUser, doc, setDoc } = useContext(UserContext);
 
-   const { user, setUser } = useContext(UserContext);
+   const [value, setValue] = useState("");
+   const [name, setName] = useState(doc.name);
+   const [save, setSave] = useState(true);
 
    const navigate = useNavigate();
+
+   useEffect(() => {
+      const element = document.querySelector(".ql-editor");
+      element.focus();
+   }, []);
+
+   useEffect(() => {
+      const container = document.querySelector(".ql-container");
+      const editor = document.querySelector(".ql-editor");
+
+      container.addEventListener("click", () => {
+         editor.focus();
+      });
+   });
+
+   useEffect(() => {
+      document.title = `${name} - Google Docs`;
+
+      setDoc((prev) => ({ ...prev, name: name }));
+   }, [name]); // eslint-disable-line
+
+   useEffect(() => {
+      setDoc((prev) => ({ ...prev, data: value }));
+   }, [value]); // eslint-disable-line
+
+   useEffect(() => {
+      setTimeout(() => {
+         setSave(true);
+      }, 3000);
+
+      setSave(false);
+   }, [doc]);
+
+   useEffect(() => {
+      if (!user) {
+         return;
+      }
+
+      const element = document.querySelector(".profile");
+
+      const handleEvent = () => {
+         setTimeout(() => {
+            element.querySelector("button").style.display = "none";
+         }, 2000);
+
+         element.querySelector("button").style.display = "block";
+      };
+
+      element.addEventListener("mouseover", handleEvent);
+
+      return () => {
+         element.removeEventListener("mouseover", handleEvent);
+      };
+   }, [user]); // eslint-disable-line
 
    const handleClick = () => {
       sessionStorage.removeItem("auth-token");
@@ -50,7 +106,17 @@ const TextEditor = () => {
                      alt="docs logo"
                   />
                </Link>
-               <p className="text-xl">Untitled document</p>
+               <input
+                  className="text-xl hover:border hover:border-gray-600 rounded-lg px-2 py-1 mx-1"
+                  type="text"
+                  maxLength={20}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+               />
+               <div className="flex space-x-2">
+                  <img className="w-5" src="/assets/save-icon.png" alt="" />
+                  <p>{save ? "Saved to Drive" : "Saving..."}</p>
+               </div>
             </div>
             <div className="flex items-center space-x-4 mr-1">
                <button className="flex items-center bg-blue-300 hover:bg-blue-500 px-4 py-2 rounded-3xl">
@@ -62,7 +128,7 @@ const TextEditor = () => {
                   <p className="text-sm font-semibold">Share</p>
                </button>
                {user ? (
-                  <div className="profile group cursor-pointer">
+                  <div className="profile cursor-pointer">
                      <img
                         src={
                            user?.photo
@@ -73,7 +139,7 @@ const TextEditor = () => {
                         alt=""
                      />
                      <button
-                        className="hidden group-hover:block absolute bg-white border border-gray-600 w-20 top-14 right-1 rounded-lg py-1"
+                        className="hidden absolute bg-white border border-gray-600 w-20 top-14 right-1 rounded-lg py-1"
                         onClick={handleClick}
                      >
                         Sign Out

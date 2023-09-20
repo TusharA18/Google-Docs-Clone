@@ -16,8 +16,8 @@ const Navbar = () => {
 
       const handleEvent = () => {
          setTimeout(() => {
-            element.querySelector("button").style.display = "hidden";
-         }, 1000);
+            element.querySelector("button").style.display = "none";
+         }, 2000);
 
          element.querySelector("button").style.display = "block";
       };
@@ -62,7 +62,7 @@ const Navbar = () => {
          <div className="flex items-center space-x-4 mr-1">
             <img className="w-7" src="/assets/menu-app.svg" alt="" />
             {user ? (
-               <div className="profile group cursor-pointer">
+               <div className="profile cursor-pointer">
                   <img
                      src={
                         user?.photo
@@ -73,7 +73,7 @@ const Navbar = () => {
                      alt=""
                   />
                   <button
-                     className="hidden group-hover:block absolute bg-white border border-gray-600 w-20 top-14 right-1 rounded-lg py-1"
+                     className="hidden absolute bg-white border border-gray-600 w-20 top-14 right-1 rounded-lg py-1"
                      onClick={handleClick}
                   >
                      Sign Out
