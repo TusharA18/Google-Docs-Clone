@@ -6,6 +6,8 @@ import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./context/UserContextProvider";
 import { fetchUserData } from "./api/api";
+import TextEditor from "./components/TextEditor";
+import "./styles.css";
 
 const App = () => {
    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -29,9 +31,7 @@ const App = () => {
    }, []); // eslint-disable-line
 
    useEffect(() => {
-      if (sessionStorage.getItem("auth-token")) {
-         navigate("/document");
-      } else {
+      if (!sessionStorage.getItem("auth-token")) {
          navigate("/login");
       }
    }, [navigate]); // eslint-disable-line
@@ -40,13 +40,15 @@ const App = () => {
       <>
          <GoogleOAuthProvider clientId={clientId}>
             <Routes>
-               <Route
-                  exact
-                  path="/"
-                  element={<Navigate to="/document" replace />}
-               />
+               <Route path="/" element={<Navigate to="/document" replace />} />
                <Route exact path="/document" element={<Home />} />
                <Route exact path="/login" element={<Login />} />
+               <Route exact path="/document/:id" element={<TextEditor />} />
+               <Route
+                  exact
+                  path="*"
+                  element={<Navigate to="/document" replace />}
+               />
             </Routes>
          </GoogleOAuthProvider>
       </>

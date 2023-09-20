@@ -38,11 +38,15 @@ const Navbar = () => {
    };
 
    return (
-      <div className="flex items-center justify-between bg-white px-5 py-2 fixed w-full h-16 shadow-lg">
-         <Link to="/">
-            <div className="flex items-center justify-center cursor-pointer">
-               <img className="w-9" src="/assets/logo.png" alt="docs logo" />
-               <p className="text-lg">Docs</p>
+      <div className="flex items-center justify-between bg-white px-5 py-2 fixed w-full h-16 shadow-lg cursor-pointer">
+         <Link to="/document">
+            <div className="flex items-center justify-center">
+               <img
+                  className="w-9 cursor-pointer"
+                  src="/assets/logo.png"
+                  alt="docs logo"
+               />
+               <p className="text-xl">Docs</p>
             </div>
          </Link>
          {user && (

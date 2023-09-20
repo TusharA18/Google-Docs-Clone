@@ -1,0 +1,36 @@
+.quill {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding-top: 5rem;
+}
+
+.ql-toolbar.ql-snow {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background-color: #edf2fa;
+   margin: auto 40px;
+   border-radius: 20px;
+   width: auto;
+   padding: 10px 15px;
+   position: fixed;
+   top: 64px;
+   z-index: 2;
+}
+
+.ql-container.ql-snow {
+   min-height: 100vh;
+   height: auto;
+   width: 50vw;
+   background-color: white;
+   margin: 20px auto;
+   border: 1px solid lightgray !important;
+   padding: 4rem;
+   overflow: hidden !important;
+   margin-top: 2.5rem;
+}
+
+.ql-editor {
+   overflow: hidden !important;
+}
