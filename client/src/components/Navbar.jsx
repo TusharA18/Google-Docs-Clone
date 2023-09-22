@@ -1,8 +1,9 @@
 import { useContext, useEffect } from "react";
 import { UserContext } from "../context/UserContextProvider";
 import { Link, useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const Navbar = () => {
+const Navbar = ({ text, setText }) => {
    const { user, setUser } = useContext(UserContext);
 
    const navigate = useNavigate();
@@ -28,6 +29,12 @@ const Navbar = () => {
          element.removeEventListener("mouseover", handleEvent);
       };
    }, [user]); // eslint-disable-line
+
+   useEffect(() => {
+      if (sessionStorage.getItem("auth-token")) {
+         navigate("/document");
+      }
+   }, [navigate]); // eslint-disable-line
 
    const handleClick = () => {
       sessionStorage.removeItem("auth-token");
@@ -55,6 +62,8 @@ const Navbar = () => {
                <input
                   className="bg-transparent w-full text-black border-none outline-none"
                   type="text"
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
                   placeholder="Search..."
                />
             </div>
@@ -82,8 +91,8 @@ const Navbar = () => {
             ) : (
                <>
                   <button
-                     className="w-20 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-700"
                      onClick={() => navigate("/login")}
+                     className="w-20 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-700"
                   >
                      Login
                   </button>
@@ -92,6 +101,11 @@ const Navbar = () => {
          </div>
       </div>
    );
+};
+
+Navbar.propTypes = {
+   text: PropTypes.string,
+   setText: PropTypes.func,
 };
 
 export default Navbar;

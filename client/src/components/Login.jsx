@@ -17,6 +17,22 @@ const Login = () => {
       }
    }, [navigate]); // eslint-disable-line
 
+   const handleSuccess = async (res) => {
+      const data = decode(res.credential);
+
+      const userData = await loginUser(data);
+
+      setUser(userData.user);
+
+      sessionStorage.setItem("auth-token", userData.token);
+
+      navigate("/document");
+   };
+
+   const handleError = (err) => {
+      console.log("Error while login in", err);
+   };
+
    return (
       <div className="h-[100vh] bg-[url('/assets/login-background.jpg')] bg-cover">
          <Navbar />
@@ -25,25 +41,12 @@ const Login = () => {
             <p className="text-center text-xl">
                Write, Share and Collaborate at <q>REAL-TIME</q>
             </p>
-
             <GoogleLogin
                size="large"
                shape="pill"
                theme="filled_blue"
-               onSuccess={async (res) => {
-                  const data = decode(res.credential);
-
-                  const userData = await loginUser(data);
-
-                  setUser(userData.user);
-
-                  sessionStorage.setItem("auth-token", userData.token);
-
-                  navigate("/document");
-               }}
-               onError={(err) => {
-                  console.log("Error while login in", err);
-               }}
+               onSuccess={handleSuccess}
+               onError={handleError}
             />
          </div>
       </div>

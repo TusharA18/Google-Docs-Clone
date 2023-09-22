@@ -5,8 +5,9 @@ const documentSchema = new mongoose.Schema({
       type: String,
       required: true,
    },
-   data: {
-      type: String,
+   value: {
+      type: Object,
+      default: "",
    },
    userId: {
       type: String,

@@ -9,6 +9,7 @@ import { fetchUserData } from "./api/api";
 import TextEditor from "./components/TextEditor";
 import "./styles.css";
 import "./App.css";
+import Error from "./components/Error";
 
 const App = () => {
    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -29,7 +30,7 @@ const App = () => {
 
          fetchData();
       }
-   }, []); // eslint-disable-line
+   }, [user]); // eslint-disable-line
 
    useEffect(() => {
       if (!sessionStorage.getItem("auth-token")) {
@@ -45,11 +46,7 @@ const App = () => {
                <Route exact path="/document" element={<Home />} />
                <Route exact path="/login" element={<Login />} />
                <Route exact path="/document/:id" element={<TextEditor />} />
-               <Route
-                  exact
-                  path="*"
-                  element={<Navigate to="/document" replace />}
-               />
+               <Route exact path="*" element={<Error />} />
             </Routes>
          </GoogleOAuthProvider>
       </>

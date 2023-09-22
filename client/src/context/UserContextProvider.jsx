@@ -6,14 +6,24 @@ export const UserContext = createContext();
 const UserProvider = ({ children }) => {
    const [user, setUser] = useState();
    const [token, setToken] = useState();
-   const [doc, setDoc] = useState({
-      name: "Untitled document",
-      data: "",
-   });
+   const [showModal, setShowModal] = useState(false);
+   const [modalData, setModalData] = useState();
+   const [deleteFlag, setDeleteFlag] = useState(false);
 
    return (
       <UserContext.Provider
-         value={{ user, setUser, token, setToken, doc, setDoc }}
+         value={{
+            user,
+            setUser,
+            token,
+            setToken,
+            showModal,
+            setShowModal,
+            modalData,
+            setModalData,
+            deleteFlag,
+            setDeleteFlag,
+         }}
       >
          {children}
       </UserContext.Provider>

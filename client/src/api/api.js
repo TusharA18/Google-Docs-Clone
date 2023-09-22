@@ -55,10 +55,80 @@ export const createDocument = async (data) => {
 
       const json = await response.json();
 
-      console.log(json);
-
       return json.newDocument;
    } catch (error) {
       console.log("Error in createDocument API", error.message);
+   }
+};
+
+export const getAllDocuments = async (data) => {
+   try {
+      const response = await fetch(`${url}/api/documents/getAllDocuments`, {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify(data),
+      });
+
+      const json = await response.json();
+
+      return json.documents;
+   } catch (error) {
+      console.log("Error in getAllDocuments API", error.message);
+   }
+};
+
+export const fetchDocument = async (data) => {
+   try {
+      const response = await fetch(`${url}/api/documents/fetchDocument`, {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify(data),
+      });
+
+      const json = await response.json();
+
+      return json.document;
+   } catch (error) {
+      console.log("Error in fetchDocument API", error.message);
+   }
+};
+
+export const updateDocument = async (data) => {
+   try {
+      const response = await fetch(`${url}/api/documents/updateDocument`, {
+         method: "PUT",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify(data),
+      });
+
+      const json = await response.json();
+
+      return json.document;
+   } catch (error) {
+      console.log("Error in updateDocument API", error.message);
+   }
+};
+
+export const deleteDocument = async (data) => {
+   try {
+      const response = await fetch(`${url}/api/documents/deleteDocument`, {
+         method: "DELETE",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify(data),
+      });
+
+      const json = await response.json();
+
+      console.log(json);
+   } catch (error) {
+      console.log("Error in deleteDocument API", error.message);
    }
 };
