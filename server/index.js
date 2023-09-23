@@ -8,6 +8,7 @@ import userRouter from "./routes/user.js";
 import documentRouter from "./routes/document.js";
 import { Server } from "socket.io";
 import Document from "./models/Document.js";
+import { isValidObjectId } from "mongoose";
 
 // config
 dotenv.config();
@@ -66,6 +67,10 @@ io.on("connection", (socket) => {
 // socket function
 const fetchDocument = async (id) => {
    if (id == null) {
+      return;
+   }
+
+   if (!isValidObjectId(id)) {
       return;
    }
 

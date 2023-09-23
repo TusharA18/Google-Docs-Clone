@@ -29,7 +29,14 @@ const Home = () => {
             userId: user._id,
          });
 
-         const filteredData = data.filter((d) => {
+         const newData = data.sort((a, b) => {
+            const aDate = new Date(a.date);
+            const bDate = new Date(b.date);
+
+            return bDate.getTime() - aDate.getTime();
+         });
+
+         const filteredData = newData.filter((d) => {
             return d?.name?.includes(text);
          });
 
@@ -42,7 +49,7 @@ const Home = () => {
    const handleNewDocument = async () => {
       const data = await createDocument({
          token: sessionStorage.getItem("auth-token"),
-         document: { name: "Untitled document", value: {}, userId: user._id },
+         document: { name: "Untitled document", value: {}, userId: user?._id },
       });
 
       if (data._id) {

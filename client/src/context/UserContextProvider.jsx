@@ -9,6 +9,7 @@ const UserProvider = ({ children }) => {
    const [showModal, setShowModal] = useState(false);
    const [modalData, setModalData] = useState();
    const [deleteFlag, setDeleteFlag] = useState(false);
+   const [showShareModal, setShowShareModal] = useState(false);
 
    return (
       <UserContext.Provider
@@ -23,6 +24,8 @@ const UserProvider = ({ children }) => {
             setModalData,
             deleteFlag,
             setDeleteFlag,
+            showShareModal,
+            setShowShareModal,
          }}
       >
          {children}

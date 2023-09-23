@@ -6,6 +6,7 @@ import { UserContext } from "../context/UserContextProvider";
 import { io } from "socket.io-client";
 import { fetchDocument } from "../api/api";
 import RenameDocumentModal from "./RenameDocumentModal";
+import ShareLinkModal from "./ShareLinkModal";
 
 const toolbarOptions = [
    ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -28,8 +29,16 @@ const toolbarOptions = [
 ];
 
 const TextEditor = () => {
-   const { user, setUser, showModal, setShowModal, modalData, setModalData } =
-      useContext(UserContext);
+   const {
+      user,
+      setUser,
+      showModal,
+      setShowModal,
+      modalData,
+      setModalData,
+      showShareModal,
+      setShowShareModal,
+   } = useContext(UserContext);
 
    const { id } = useParams();
 
@@ -54,6 +63,29 @@ const TextEditor = () => {
          editor?.focus();
       });
    });
+
+   useEffect(() => {
+      document.title = `${name} - Google Docs`;
+   }, [name]);
+
+   useEffect(() => {
+      const fetchData = async () => {
+         const data = await fetchDocument({
+            token: sessionStorage.getItem("auth-token"),
+            docId: id,
+         });
+
+         if (!data) {
+            navigate("/error");
+         }
+
+         setModalData(data);
+
+         setName(data?.name);
+      };
+
+      fetchData();
+   }, [showModal, flag]); // eslint-disable-line
 
    useEffect(() => {
       const container = document.querySelector(".container");
@@ -86,21 +118,6 @@ const TextEditor = () => {
          socket && socket.disconnect();
       };
    }, []); // eslint-disable-line
-
-   useEffect(() => {
-      const fetchData = async () => {
-         const data = await fetchDocument({
-            token: sessionStorage.getItem("auth-token"),
-            docId: id,
-         });
-
-         setModalData(data);
-
-         setName(data?.name);
-      };
-
-      fetchData();
-   }, [showModal, flag]); // eslint-disable-line
 
    useEffect(() => {
       if (quill == null || socket == null) {
@@ -253,13 +270,16 @@ const TextEditor = () => {
                {user?._id === modalData?.userId && (
                   <div
                      onClick={handleToggle}
-                     className="flex items-center text-lg border cursor-pointer border-gray-300 bg-white text-blue-600 hover:bg-blue-100 px-4 py-2 rounded-3xl space-x-1"
+                     className="flex items-center text-lg border cursor-pointer border-gray-300 bg-white text-blue-600 hover:bg-blue-100 px-4 py-2 rounded-3xl space-x-2"
                   >
                      <img src="/assets/rename.png" className="w-6" alt="" />
                      <p>Rename</p>
                   </div>
                )}
-               <button className="flex items-center bg-blue-400 text-white hover:bg-blue-500 px-4 py-2 rounded-3xl text-lg">
+               <button
+                  onClick={() => setShowShareModal(true)}
+                  className="flex items-center bg-blue-400 text-white hover:bg-blue-500 px-4 py-2 rounded-3xl text-lg space-x-1"
+               >
                   <img
                      className="w-5 mix-blend-multiply"
                      src="/assets/lock-icon.jpg"
@@ -299,6 +319,7 @@ const TextEditor = () => {
          </div>
          <div className="container pt-10 w-full m-auto"></div>
          {showModal && <RenameDocumentModal />}
+         {showShareModal && <ShareLinkModal />}
       </div>
    );
 };

@@ -1,4 +1,6 @@
+import { isValidObjectId } from "mongoose";
 import Document from "../models/Document.js";
+import { isObjectIdOrHexString } from "mongoose";
 
 export const createDocument = async (req, res) => {
    try {
@@ -34,7 +36,17 @@ export const getAllDocuments = async (req, res) => {
 
 export const fetchDocument = async (req, res) => {
    try {
-      const document = await Document.findById(req.body.docId);
+      const { docId } = req.body;
+
+      if (!isValidObjectId(docId)) {
+         return res
+            .status(400)
+            .json({ msg: "Please enter a valid documentID!" });
+      }
+
+      const document = await Document.findById(docId).catch((err) =>
+         res.status(400).json({ msg: "Please enter a valid documentID!" })
+      );
 
       if (!document) {
          return res.status(400).json({ msg: "No document found!" });

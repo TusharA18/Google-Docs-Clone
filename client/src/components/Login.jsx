@@ -12,6 +12,10 @@ const Login = () => {
    const { setUser } = useContext(UserContext);
 
    useEffect(() => {
+      document.title = "Login - Google Docs";
+   }, []);
+
+   useEffect(() => {
       if (sessionStorage.getItem("auth-token")) {
          navigate("/document");
       }

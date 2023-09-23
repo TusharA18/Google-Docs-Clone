@@ -37,9 +37,9 @@ const Document = ({ document }) => {
       <div className="flex-col items-end bg-gray-200 border border-gray-200 h-80 w-54 cursor-pointer">
          <div
             onClick={handleDocument}
-            className="h-[74.5%] bg-gradient-to-t from-blue-50 to-white"
+            className="h-[74.5%] bg-gradient-to-t from-blue-50 to-white flex items-center justify-center"
          >
-            {/* <iframe src={`${url}/document/${document._id}`}></iframe> */}
+            <h1 className="text-gray-500">Click to continue...</h1>
          </div>
          <div className="flex-col bg-white px-3 py-2">
             <div onClick={handleDocument} className="">
@@ -54,7 +54,6 @@ const Document = ({ document }) => {
                   <p className="text-[13px] text-gray-600">
                      {formatDate(new Date(document.date))}
                   </p>
-                  {console.log()}
                </div>
                <div className="flex items-center justify-center">
                   <IconButton onClick={handleToggle}>
